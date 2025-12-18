@@ -63,7 +63,7 @@ function Auth({ insideRegister }) {
         if (result.status == 200) {
           toast.success("Login Successfull")
           sessionStorage.setItem("token", result.data.token)
-          sessionStorage.setItem("user", JSON.stringify(result.data.token))
+          sessionStorage.setItem("user", JSON.stringify(result.data.user))
           setTimeout(() => {
             if (result.data.user.role == "admin") {
               navigate('/admin/home')
@@ -94,6 +94,8 @@ function Auth({ insideRegister }) {
     //email,name,picture
     const result = await googleLoginAPI({username:decode.name,email:decode.email,password:"googlePassword",picture:decode.picture})
      if (result.status == 200) {
+      console.log(result);
+      
           toast.success("Login Successfull")
           sessionStorage.setItem("token", result.data.token)
           sessionStorage.setItem("user", JSON.stringify(result.data.user))

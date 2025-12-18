@@ -1,20 +1,41 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FaBars } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import { getAllBooksPageAPI } from '../../services/allAPI'
+import { searchContext } from '../../contextAPI/ShareContext'
 
 
 function Books() {
+  const  {searchKey,setSearchKey} = useContext(searchContext)
   const [showCategoryList,setShowCategoryList] = useState(false)
   const [token,setToken] = useState("")
+  const [allBooks,setAllBooks] = useState([])
+
+  console.log(allBooks);
+  
 
   useEffect(()=>{
     if(sessionStorage.getItem("token")){
       const userToken = sessionStorage.getItem("token")
        setToken(userToken) 
+       getAllBooks(userToken)
     }
-  },[])
+  },[searchKey])
+
+  const getAllBooks = async(token)=>{
+    const reqHeader = {
+      "Authorization":`Bearer ${token}`
+    }
+    const result = await getAllBooksPageAPI(reqHeader,searchKey)
+    if(result.status==200){
+      setAllBooks(result.data)
+    }else{
+      console.log(result);
+      
+    }
+  }
 
   return (
     <>
@@ -30,7 +51,7 @@ function Books() {
           <h1 className='text-3xl font-bold my-3'>All Books</h1>
           {/* search box */}
           <div className="flex my-2 ">
-            <input placeholder='Search By Title' type="text" className='border p-2 border-gray-400 min-w-full' />
+            <input value={searchKey} onChange={e=>setSearchKey(e.target.value)} placeholder='Search By Title' type="text" className='border p-2 border-gray-400 min-w-full' />
             <button className='bg-black p-2 text-white'>Search</button>
           </div>
         </div>
@@ -61,45 +82,22 @@ function Books() {
           <div className="col-span-3">
              <div className="md:grid grid-cols-4 mt-5 md:mt-0">
            {/* book card div1 */}
-              <div className="shadow rounded p-3 mx-4 mb-5 md:mb-0 ">
-              <img width={'350px'} height={'350px'} src="https://store.whitefalconpublishing.com/cdn/shop/files/TheEnglish_CoverHB_F_large.jpg?v=1718624085" alt="book" />
+              {
+                allBooks?.length>0 ?
+                allBooks?.map(book=>(
+                  <div key={book?._id} className="shadow rounded p-3 mx-4 mb-5 md:mb-0 ">
+              <img width={'350px'} height={'350px'} src={book?.imageURL} alt="book" />
               <div className='flex justify-center items-center flex-col mt-4'>
-                <h3 className='text-blue-600 font-bold text-lg'>Author</h3>
-                <h4 className='text-lg'>Title</h4>
-                <Link to={'/books/:id/view'} className='bg-black py-2 px-5 mt-2 text-white'>View</Link>
+                <h3 className='text-blue-600 font-bold text-lg'>{book?.author}</h3>
+                <h4 className='text-lg'>{book?.title.slice(0,9)}...</h4>
+                <Link to={`/books/${book?._id}`} className='bg-black py-2 px-5 mt-2 text-white'>View</Link>
               </div>
             </div>
-             {/* book card div2 */}
-           
-              <div className="shadow rounded p-3 mx-4 mb-5 md:mb-0 ">
-              <img width={'350px'} height={'350px'} src="https://store.whitefalconpublishing.com/cdn/shop/files/TheEnglish_CoverHB_F_large.jpg?v=1718624085" alt="book" />
-              <div className='flex justify-center items-center flex-col mt-4'>
-                <h3 className='text-blue-600 font-bold text-lg'>Author</h3>
-                <h4 className='text-lg'>Title</h4>
-                <Link to={'/books/:id/view'} className='bg-black py-2 px-5 mt-2 text-white'>View</Link>
-              </div>
-            </div>
-              {/* book card div3 */}
-        
-         <div className="shadow rounded p-3 mx-4 mb-5 md:mb-0 ">
-              <img width={'350px'} height={'350px'} src="https://store.whitefalconpublishing.com/cdn/shop/files/TheEnglish_CoverHB_F_large.jpg?v=1718624085" alt="book" />
-              <div className='flex justify-center items-center flex-col mt-4'>
-                <h3 className='text-blue-600 font-bold text-lg'>Author</h3>
-                <h4 className='text-lg'>Title</h4>
-                <Link to={'/books/:id/view'} className='bg-black py-2 px-5 mt-2 text-white'>View</Link>
-              </div>
-            </div>
-               
-          {/* book card div4 */}
-         
-      <div className="shadow rounded p-3 mx-4 mb-5 md:mb-0 ">
-              <img width={'350px'} height={'350px'} src="https://store.whitefalconpublishing.com/cdn/shop/files/TheEnglish_CoverHB_F_large.jpg?v=1718624085" alt="book" />
-              <div className='flex justify-center items-center flex-col mt-4'>
-                <h3 className='text-blue-600 font-bold text-lg'>Author</h3>
-                <h4 className='text-lg'>Title</h4>
-                <Link to={'/books/:id/view'} className='bg-black py-2 px-5 mt-2 text-white'>View</Link>
-              </div>
-            </div>
+                ))
+                :
+                <p className='font-bold'>Book Not Found</p>
+              }
+             
           
              </div>
           </div>

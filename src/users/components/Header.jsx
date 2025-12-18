@@ -51,7 +51,7 @@ function Header() {
               <div className="relative inline-bolck text-left ms-2">
                 <button onClick={() => setDropdown(!dropDown)} className="w-full bg-white px-3 py-2 shadow hover:bg-gray-50">
                   <img width={'40px'} height={'40px'} style={{ borderRadius: "50%" }}
-                    src={dp? dp: "https://pixinvent.com/materialize-material-design-admin-template/app-assets/images/user/12.jpg"} alt="profile picture" />
+                    src={dp? dp: "https://www.shutterstock.com/image-photo/passport-photo-portrait-young-man-600nw-2437772333.jpg"} alt="profile picture" />
 
                 </button>
                 {
@@ -88,7 +88,7 @@ function Header() {
               <div className="relative inline-bolck text-left ms-2">
                 <button onClick={() => setDropdown(!dropDown)} className="w-full bg-white px-3 py-2 shadow hover:bg-gray-50">
                   <img width={'40px'} height={'40px'} style={{ borderRadius: "50%" }}
-                    src={dp ? dp : "https://pixinvent.com/materialize-material-design-admin-template/app-assets/images/user/12.jpg"} alt="profile picture" />
+                    src={dp ? dp : "https://www.shutterstock.com/image-photo/passport-photo-portrait-young-man-600nw-2437772333.jpg"} alt="profile picture" />
                 </button>
                 {
                   dropDown &&
@@ -110,7 +110,7 @@ function Header() {
         {/* ul - links */}
 
         <ul className={listStatus ? "flex flex-col" : "md:flex justify-center items-center hidden"}>
-          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/'} className='md:mx-4 '>HOME</Link></li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/'} className='md:mx-4 underline'>HOME</Link></li>
           <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/books'} className='md:mx-4'>BOOKS</Link></li>
           <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/contact'} className='md:mx-4'>CONTACT</Link></li>
         </ul>

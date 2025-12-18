@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import { FaPlus } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import { addBookAPI } from '../../services/allAPI';
+
 
 function SellBook() {
     const [bookDetails, setBookDetails] = useState({
@@ -10,22 +13,72 @@ function SellBook() {
     const [previewList, setPreviewList] = useState([])
 
     console.log(bookDetails);
+
+
+
     const handleUploadBookImage = (e) => {
-   //get file which upload
-   console.log(e.target.files[0]);
-   //add to file to state
-   const imgFileArray = bookDetails.uploadImages
-   imgFileArray.push(e.target.files[0])
-   setBookDetails({...bookDetails,uploadImages:imgFileArray})
-   //convert file to url
-   const url = URL.createObjectURL(e.target.files[0])
-   console.log(url);
-   setPreview(url)
-   const bookImagesArray = previewList
-   bookImagesArray.push(url)
-   setPreviewList(bookImagesArray)
-   
-   
+        //get file which upload
+        console.log(e.target.files[0]);
+        //add to file to state
+        const imgFileArray = bookDetails.uploadImages
+        imgFileArray.push(e.target.files[0])
+        setBookDetails({ ...bookDetails, uploadImages: imgFileArray })
+        //convert file to url
+        const url = URL.createObjectURL(e.target.files[0])
+        console.log(url);
+        setPreview(url)
+        const bookImagesArray = previewList
+        bookImagesArray.push(url)
+        setPreviewList(bookImagesArray)
+
+
+    }
+
+
+    const handleUploadBook = async () => {
+        const { title,author,pages,price,discountPrice,imageURL,abstract,language,publisher,isbn,category,uploadImages} = bookDetails
+        if (!title || !author || !pages || !price || !discountPrice || !imageURL || !abstract || !language || !publisher || !isbn || !category || uploadImages.length == 0) {
+            toast.info("Please fill the form completely")
+        } else {
+            //api call - addbookapi
+            const token = sessionStorage.getItem("token")
+            if (token) {
+                const reqHeader = {
+                    "Authorization": `Bearer ${token}`
+                }
+                const reqBody = new FormData()
+                for (let key in bookDetails) {
+                    if (key != "uploadImages") {
+                        reqBody.append(key, bookDetails[key])
+                    } else {
+                        bookDetails.uploadImages.forEach(imgFile => {
+                            reqBody.append("uploadImages", imgFile)
+                        })
+                    }
+                }
+                const result = await addBookAPI(reqBody, reqHeader)
+                console.log(result);
+                if (result.status == 200) {
+                    toast.success("Book Added Successfully...")
+                } else if (result.status == 401) {
+                    toast.warning(result.response.data)
+                } else {
+                    toast.error("Something went wrong!!")
+                }
+                resetUploadBookForm()
+            }
+        }
+    }
+
+
+
+    const resetUploadBookForm = () => {
+        setBookDetails({
+            title: "", author: "", pages: "", price: "", discountPrice: "", imageURL: "", abstract: "",
+            language: "", publisher: "", isbn: "", category: "", uploadImages: []
+        })
+        setPreview("")
+        setPreviewList([])
     }
 
     return (
@@ -110,18 +163,21 @@ function SellBook() {
                     </div>
                 </div>
                 <div className="flex justify-end mt-3">
-                    <button className="bg-yellow-400 text-whit p-2  rounded me-5 hover:bg-black hover:text-white">
+                    <button onClick={resetUploadBookForm} className="bg-yellow-400 text-black p-2  rounded me-5 hover:bg-black hover:text-white">
                         RESET</button>
-                    <button className="bg-blue-600 text-whit p-2 rounded me-5  hover:bg-black hover:text-white">
+                    <button onClick={handleUploadBook} className="bg-blue-600 text-white p-2 rounded me-5  hover:bg-black hover:text-white">
                         Add Book</button>
                 </div>
 
             </div>
+            <ToastContainer position="top-center" autoClose={5000} theme="colored" />
+
         </div>
     )
 }
 
 export default SellBook
+
 
 
 
