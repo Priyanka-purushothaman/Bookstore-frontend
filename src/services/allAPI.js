@@ -52,4 +52,11 @@ return await commonAPI("GET",`${serverURL}/user-books/bought`,{},reqHeader)
 
 }
 
+///user-books/all -  bookpage api : called by booksstatus component when page loads - authorised user 
+
+export const viewBookAPI = async (reqHeader,id) =>{
+return await commonAPI("GET",`${serverURL}/books/${id}/view`,{},reqHeader)
+
+}
+
 

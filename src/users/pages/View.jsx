@@ -1,14 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FaBackward, FaCamera, FaEye } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link ,useParams} from 'react-router-dom'
 import { FaX } from 'react-icons/fa6'
+import { viewBookAPI } from '../../services/allAPI'
+import {serverURL} from '../../services/serverURL'
+
 
 
 function View() {
 
   const [modalSatus, SetModalStatus] = useState(false)
+  const {id} = useParams()
+  console.log(id);
+  
+  const[book,setBook] = useState({})
+  console.log(book);
+
+   useEffect(()=>{
+   getBookDetails()
+   },[])
+  
+
+  const getBookDetails = async ()=>{
+    const token = sessionStorage.getItem("token")
+    if(token){
+       const reqHeader = {
+      "Authorization":`Bearer ${token}`
+    }
+    const result = await viewBookAPI(reqHeader,id)
+    if(result.status==200){
+      setBook(result.data)
+    } else{
+      console.log(result);
+      
+    }
+    }
+  }
   return (
     <>
       < Header />
@@ -23,23 +52,23 @@ function View() {
             {/* book details column */}
             <div className="col-span-3">
               <div className="flex justify-between items-center mt-2 md:mt-0">
-                <h1 className='text-2xl font-black'>Book- Title</h1>
+                <h1 className='text-2xl font-black'>{book?.title}</h1>
                 <button onClick={() => SetModalStatus(true)} className='text-gray-400'><FaEye /></button>
               </div>
 
-              <p className='my-2 text-red-900'> -Author</p>
+              <p className='my-2 text-red-900'> {book?.author}</p>
               <div className="md:grid grid-cols-3 gap-1 my-5">
-                <p className='font-bold'>Pubsher  :</p>
-                <p className='font-bold'>Language :</p>
-                <p className='font-bold'>No. of Pages  :</p>
-                <p className='font-bold'>Original Price : </p>
-                <p className='font-bold'>ISBN :  </p>
-                <p className='font-bold'>Cateogry : </p>
-                <p className='font-bold'>Seller : </p>
+                <p className='font-bold'>{book?.publisher} </p>
+                <p className='font-bold'>{book?.language}</p>
+                <p className='font-bold'>{book?.pages} </p>
+                <p className='font-bold'>{book?.discountPrice}</p>
+                <p className='font-bold'>{book?.isbn}</p>
+                <p className='font-bold'>{book?.category}</p>
+                <p className='font-bold'>{book?.sellerMail}</p>
               </div>
               <div className="md:my-10 my-2">
                 <p className='font-bold text-lg'>
-                  Abstract
+                  {book?.sellabstracterMail}
                 </p>
               </div>
               <div className="flex justify-end">
@@ -70,8 +99,12 @@ function View() {
                   <p className='text-blue-600 flex items-center'><FaCamera className='me-2' />Camer clicks of the book in the hand of seller</p>
                   {/* book images in row*/}
                   <div className="md:flex flex-wrap my-4 ">
-                    <img className='md:w-75 w-25 md:me-2 mb-3 md:mb-0' src="https://store.whitefalconpublishing.com/cdn/shop/files/TheEnglish_CoverHB_F_large.jpg?v=1718624085" alt="book" />
+                    {
+                      book?.uploadImages?.map((filename)=>(
+                      <img key={filename} className='md:w-75 w-25 md:me-2 mb-3 md:mb-0' src={`${serverURL}/uploads/${filename}`} alt="book" />
 
+                      ))
+                    }
                   </div>
                 </div>
               </div>

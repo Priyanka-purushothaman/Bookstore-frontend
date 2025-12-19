@@ -12,6 +12,8 @@ function Books() {
   const [showCategoryList,setShowCategoryList] = useState(false)
   const [token,setToken] = useState("")
   const [allBooks,setAllBooks] = useState([])
+  const [allcategory,setAllCategory] = useState([])
+  const [tempAllBooks,setTempAllBooks] = useState([])
 
   console.log(allBooks);
   
@@ -31,9 +33,23 @@ function Books() {
     const result = await getAllBooksPageAPI(reqHeader,searchKey)
     if(result.status==200){
       setAllBooks(result.data)
+      setTempAllBooks(result.data)
+      const tempAllCategory = result.data?.map(item=>item.category)
+      const tempAllCategorySet = new Set(tempAllCategory)
+      console.log([...tempAllCategorySet]);
+      setAllCategory([...tempAllCategorySet])
+      
     }else{
       console.log(result);
       
+    }
+  }
+
+  const filterBooks = (category)=>{
+    if(category=="all"){
+      setAllBooks(tempAllBooks)
+    } else{
+      setAllBooks(tempAllBooks?.filter(item=>item.category==category))
     }
   }
 
@@ -68,13 +84,20 @@ function Books() {
             <div className={showCategoryList?"block":"md:block hidden"}>
               {/* category 1 */}
               <div className="mt-3">
-                <input type="radio" name='flter' id='all' />
+                <input onClick={()=>filterBooks("all")} type="radio" name='flter' id='all' />
                 <label htmlFor="all" className='ms-3'>All</label>
               </div>
-              <div className="mt-3">
-                <input type="radio" name='flter' id='demo' />
-                <label htmlFor="demo" className='ms-3'>Category Name</label>
+              {/* book category */}
+             {
+              allcategory?.map((category,index)=>(
+                 <div key={index} className="mt-3">
+                <input onClick={()=>filterBooks(category)} type="radio" name='flter' id={category} />
+                <label htmlFor={category} className='ms-3'>{category}
+
+                </label>
               </div>
+              ))
+             }
             </div>
           </div>
 
@@ -90,8 +113,8 @@ function Books() {
               <div className='flex justify-center items-center flex-col mt-4'>
                 <h3 className='text-blue-600 font-bold text-lg'>{book?.author}</h3>
                 <h4 className='text-lg'>{book?.title.slice(0,9)}...</h4>
-                <Link to={`/books/${book?._id}`} className='bg-black py-2 px-5 mt-2 text-white'>View</Link>
-              </div>
+                <Link to={`/books/${book?._id}/view`} className='bg-black py-2 px-5 mt-2 text-white'>View</Link>
+               </div>
             </div>
                 ))
                 :
