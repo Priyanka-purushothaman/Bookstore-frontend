@@ -27,7 +27,7 @@ function Edit() {
               {/* image */}
               <label htmlFor="uploadImg" >
                 <input type="file" id='uploadImg' hidden />
-                <img style={{ width: '150px', height: '150px', borderRadius: '50%' }} src="https://mockmind-api.uifaces.co/content/human/80.jpg" alt="profile" />
+                <img style={{ width: '100px', height: '100px', borderRadius: '50%' }} src="https://mockmind-api.uifaces.co/content/human/80.jpg" alt="profile" />
 
                 </label>
                 <button style={{marginTop:'-20px'}} className='bg-dark p-2 text-white rounded'><FaPen/></button>

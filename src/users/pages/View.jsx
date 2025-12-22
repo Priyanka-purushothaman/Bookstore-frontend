@@ -5,7 +5,7 @@ import { FaBackward, FaCamera, FaEye } from 'react-icons/fa'
 import { Link ,useParams} from 'react-router-dom'
 import { FaX } from 'react-icons/fa6'
 import { viewBookAPI } from '../../services/allAPI'
-import {serverURL} from '../../services/serverURL'
+import serverURL from '../../services/serverURL'
 
 
 
@@ -46,7 +46,7 @@ function View() {
           <div className="md:grid grid-cols-4 gap-x-10">
             {/* image column */}
             <div className="col-span-1">
-              <img width={'250px'} height={'250px'} src="https://store.whitefalconpublishing.com/cdn/shop/files/TheEnglish_CoverHB_F_large.jpg?v=1718624085" alt="book" />
+              <img width={'250px'} height={'250px'} src={book?.imageURL} alt="book" />
 
             </div>
             {/* book details column */}
@@ -58,23 +58,23 @@ function View() {
 
               <p className='my-2 text-red-900'> {book?.author}</p>
               <div className="md:grid grid-cols-3 gap-1 my-5">
-                <p className='font-bold'>{book?.publisher} </p>
-                <p className='font-bold'>{book?.language}</p>
-                <p className='font-bold'>{book?.pages} </p>
-                <p className='font-bold'>{book?.discountPrice}</p>
-                <p className='font-bold'>{book?.isbn}</p>
-                <p className='font-bold'>{book?.category}</p>
-                <p className='font-bold'>{book?.sellerMail}</p>
+                <p className='font-bold'>Publisher : {book?.publisher} </p>
+                <p className='font-bold'>language : {book?.language}</p>
+                <p className='font-bold'>Pages : {book?.pages} </p>
+                <p className='font-bold'>Price : {book?.price}</p>
+                <p className='font-bold'>Isbn : {book?.isbn}</p>
+                <p className='font-bold'>Category : {book?.category}</p>
+                <p className='font-bold'>SellerMail : {book?.sellerMail}</p>
               </div>
               <div className="md:my-10 my-2">
                 <p className='font-bold text-lg'>
-                  {book?.sellabstracterMail}
+                  {book?.abstract}
                 </p>
               </div>
               <div className="flex justify-end">
                 <Link to={'/books'} className='bg-blue-700 text-white flex items-center rounded p-2'>
                   <FaBackward className='me-3 ' />Back</Link>
-                <button className='bg-green-700 p-2 rounded text-white ms-5'>Buy $ 300</button>
+                <button className='bg-green-700 p-2 rounded text-white ms-5'>Buy $ {book?.discountPrice} </button>
               </div>
 
             </div>
@@ -101,8 +101,8 @@ function View() {
                   <div className="md:flex flex-wrap my-4 ">
                     {
                       book?.uploadImages?.map((filename)=>(
-                      <img key={filename} className='md:w-75 w-25 md:me-2 mb-3 md:mb-0' src={`${serverURL}/uploads/${filename}`} alt="book" />
-
+                      <img key={filename} className='md:w-75 w-25 md:me-2 mb-3 md:mb-0' src={`${serverURL}/uploads/${filename}`}  alt="book" />
+                                                  // ${serverURL}/books/${id}/view`
                       ))
                     }
                   </div>

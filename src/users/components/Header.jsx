@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { FaAddressCard, FaBars, FaFacebook, FaInstagram, FaPowerOff, FaTwitter, FaUser } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 function Header() {
   const [listStatus, setListSattus] = useState(false)
   const [dp,setDp] = useState("")
   const [token,setToken] = useState("")
   const [dropDown,setDropdown] = useState(false)
+  const navigate = useNavigate()
  console.log(dp);
   
   useEffect(() => {
@@ -21,6 +22,17 @@ function Header() {
 
   const menuBtnClick = () => {
     setListSattus(!listStatus)
+  }
+
+  const logout = ()=>{
+    sessionStorage.clear()
+    setToken("")
+    setDp("")
+    setDropdown(false)
+    setListSattus(false)
+    navigate('/')
+
+
   }
   return (
     <>
@@ -60,7 +72,7 @@ function Header() {
                  ring-1 ring-black/5 focus:outline-hidden'>
                     <Link to={'/user/profile'} className='px-4 py-2 text-sm text-gray-700 flex items-center'>
                       <FaAddressCard className='me-2' />Profile</Link>
-                    <button className='px-4 py-2 text-sm text-gray-700 flex items-center'><FaPowerOff className='me-2' />Logout</button>
+                    <button onClick={logout}  className='px-4 py-2 text-sm text-gray-700 flex items-center'><FaPowerOff className='me-2' />Logout</button>
 
                   </div>
 
@@ -96,7 +108,7 @@ function Header() {
                  ring-1 ring-black/5 focus:outline-hidden'>
                     <Link to={'/user/profile'} className='px-4 py-2 text-sm text-gray-700 flex items-center'>
                       <FaAddressCard className='me-2' />Profile</Link>
-                    <button className='px-4 py-2 text-sm text-gray-700 flex items-center'><FaPowerOff className='me-2' />Logout</button>
+                    <button onClick={logout} className='px-4 py-2 text-sm text-gray-700 flex items-center'><FaPowerOff className='me-2' />Logout</button>
 
                   </div>
 
@@ -110,9 +122,9 @@ function Header() {
         {/* ul - links */}
 
         <ul className={listStatus ? "flex flex-col" : "md:flex justify-center items-center hidden"}>
-          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/'} className='md:mx-4 underline'>HOME</Link></li>
-          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/books'} className='md:mx-4'>BOOKS</Link></li>
-          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/contact'} className='md:mx-4'>CONTACT</Link></li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/'} className='md:mx-4 no-underline '>HOME</Link></li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/books'} className='md:mx-4 no-underline'>BOOKS</Link></li>
+          <li className='md:mx-4 mt-3 md:mt-0'><Link to={'/contact'} className='md:mx-4 no-underline'>CONTACT</Link></li>
         </ul>
       </nav>
     </>
