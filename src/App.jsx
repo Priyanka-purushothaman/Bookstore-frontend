@@ -37,12 +37,6 @@ function App() {
 
         <Route path='/*' element={<Pnf />} />
 
-
-
-
-
-
-
       </Routes>
     </>
   )

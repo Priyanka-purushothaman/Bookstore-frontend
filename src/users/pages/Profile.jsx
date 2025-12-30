@@ -6,6 +6,8 @@ import Edit from '../components/Edit'
 import SellBook from '../components/SellBook'
 import BookStatus from '../components/BookStatus'
 import Purchase from '../components/Purchase'
+import serverURL from '../../services/serverURL'
+
 
 
 function Profile() {
@@ -33,7 +35,10 @@ function Profile() {
       </div>
       {/* profile image */}
       <div style={{ width: '230px', height: '230px', borderRadius: '50%', marginLeft: '70px', marginTop: '-130px' }} className="bg-white p-3">
-        <img style={{ width: '200px', height: '200px', borderRadius: '50%' }} src={dp ? dp : "https://mockmind-api.uifaces.co/content/human/80.jpg"} alt="profile" />
+        <img style={{ width: '200px', height: '200px', borderRadius: '50%' }} 
+        src={dp?dp.startsWith("https://lh3.googleusercontent.com/")?dp:`${serverURL}/uploads/${dp}`: "https://www.shutterstock.com/image-photo/passport-photo-portrait-young-man-600nw-2437772333.jpg"} alt="profile picture" />
+
+    
       </div>
       {/* name with edit block */}
       <div className="md:flex justify-between items-center my-5 md:px-20 px-7">

@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { FaAddressCard, FaBars, FaFacebook, FaInstagram, FaPowerOff, FaTwitter, FaUser } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
-
+import serverURL from '../../services/serverURL'
 function Header() {
   const [listStatus, setListSattus] = useState(false)
-  const [dp,setDp] = useState("")
-  const [token,setToken] = useState("")
-  const [dropDown,setDropdown] = useState(false)
+  const [dp, setDp] = useState("")
+  const [token, setToken] = useState("")
+  const [dropDown, setDropdown] = useState(false)
   const navigate = useNavigate()
- console.log(dp);
-  
+  console.log(dp);
+
   useEffect(() => {
     if (sessionStorage.getItem("token")) {
       const userToken = sessionStorage.getItem("token")
@@ -24,7 +24,7 @@ function Header() {
     setListSattus(!listStatus)
   }
 
-  const logout = ()=>{
+  const logout = () => {
     sessionStorage.clear()
     setToken("")
     setDp("")
@@ -63,7 +63,7 @@ function Header() {
               <div className="relative inline-bolck text-left ms-2">
                 <button onClick={() => setDropdown(!dropDown)} className="w-full bg-white px-3 py-2 shadow hover:bg-gray-50">
                   <img width={'40px'} height={'40px'} style={{ borderRadius: "50%" }}
-                    src={dp? dp: "https://www.shutterstock.com/image-photo/passport-photo-portrait-young-man-600nw-2437772333.jpg"} alt="profile picture" />
+                    src={dp ? dp.startsWith("https://lh3.googleusercontent.com/") ? dp : `${serverURL}/uploads/${dp}` : "https://www.shutterstock.com/image-photo/passport-photo-portrait-young-man-600nw-2437772333.jpg"} alt="profile picture" />
 
                 </button>
                 {
@@ -72,7 +72,7 @@ function Header() {
                  ring-1 ring-black/5 focus:outline-hidden'>
                     <Link to={'/user/profile'} className='px-4 py-2 text-sm text-gray-700 flex items-center'>
                       <FaAddressCard className='me-2' />Profile</Link>
-                    <button onClick={logout}  className='px-4 py-2 text-sm text-gray-700 flex items-center'><FaPowerOff className='me-2' />Logout</button>
+                    <button onClick={logout} className='px-4 py-2 text-sm text-gray-700 flex items-center'><FaPowerOff className='me-2' />Logout</button>
 
                   </div>
 
@@ -100,8 +100,7 @@ function Header() {
               <div className="relative inline-bolck text-left ms-2">
                 <button onClick={() => setDropdown(!dropDown)} className="w-full bg-white px-3 py-2 shadow hover:bg-gray-50">
                   <img width={'40px'} height={'40px'} style={{ borderRadius: "50%" }}
-                    src={dp ? dp : "https://www.shutterstock.com/image-photo/passport-photo-portrait-young-man-600nw-2437772333.jpg"} alt="profile picture" />
-                </button>
+                    src={dp ? dp.startsWith("https://lh3.googleusercontent.com/") ? dp : `${serverURL}/uploads/${dp}` : "https://www.shutterstock.com/image-photo/passport-photo-portrait-young-man-600nw-2437772333.jpg"} alt="profile picture" />                </button>
                 {
                   dropDown &&
                   <div className='absolute right-0 z-10 mt-2 w-40 rounded-md bg-white shadow-lg origin-top-right 
