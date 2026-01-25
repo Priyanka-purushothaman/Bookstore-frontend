@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {  useContext, useState } from 'react'
 import { FaUser } from 'react-icons/fa'
 import { FaEye, FaEyeSlash } from 'react-icons/fa6'
 import { Link, useNavigate } from 'react-router-dom'
@@ -6,9 +6,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import { registerAPI, loginAPI,googleLoginAPI } from '../services/allAPI';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import { routeGuardContext } from '../contextAPI/GuardContex';
 
 
 function Auth({ insideRegister }) {
+  const {role,setAuthorised} = useContext(routeGuardContext)
   const navigate = useNavigate()
   const [viewPassword, setViewPassword] = useState(false)
   // store data from
@@ -64,6 +66,7 @@ function Auth({ insideRegister }) {
           toast.success("Login Successfull")
           sessionStorage.setItem("token", result.data.token)
           sessionStorage.setItem("user", JSON.stringify(result.data.user))
+          setAuthorised(true)
           setTimeout(() => {
             if (result.data.user.role == "admin") {
               navigate('/admin/home')
@@ -99,6 +102,8 @@ function Auth({ insideRegister }) {
           toast.success("Login Successfull")
           sessionStorage.setItem("token", result.data.token)
           sessionStorage.setItem("user", JSON.stringify(result.data.user))
+            setAuthorised(true)
+
           setTimeout(() => {
             if (result.data.user.role == "admin") {
               navigate('/admin/home')

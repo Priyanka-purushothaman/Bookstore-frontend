@@ -1,21 +1,29 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { routeGuardContext } from '../contextAPI/GuardContex'
 
 function Pnf() {
+  const {role,authorised} = useContext(routeGuardContext)
+  const navigate = useNavigate()
+  const backHome= () =>{
+    if(authorised){
+    role=="user"? navigate('/') : navigate('')
+
+    } else{
+      navigate('/')
+    }
+  }
   return (
     <>
       
-    <div className="flex items-center justify-center" >
+    <div className="h-screen flex items-center flex-col justify-center" >
     
-      <img className='w-50' src="https://miro.medium.com/v2/resize:fit:1400/0*GUYQoLJ08bNdTigR.gif" alt="page not found" />
-    
-
-     </div>
-     <div className="flex justify-center font-bold ">
-       {/* <h3 >404</h3> <br /> */}
-       <h1  style={{color:'red'}}>Page Not Found</h1>
-       {/* <h2>We Couldn't find this Page </h2> */}
+      <img width={'25%'} src="https://miro.medium.com/v2/resize:fit:1400/0*GUYQoLJ08bNdTigR.gif" alt="page not found" />
+      <p className='font-bold text-2xl'>Oh!!! No..</p>
+       <h1 style={{color:'blue'}} className='text-blue-800'>Page Not Found</h1>
+       <h2>We Couldn't find this Page </h2>
       
-      
+      <button onClick={backHome} className='bg-blue-800 py-2 px-5 mt-4 text-white'>Home</button>
      </div>
       
      </>

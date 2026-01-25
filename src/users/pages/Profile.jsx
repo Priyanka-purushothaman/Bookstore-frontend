@@ -20,11 +20,11 @@ function Profile() {
   useEffect(() => {
     if (sessionStorage.getItem("token") && sessionStorage.getItem("user")) {
       const user = JSON.parse(sessionStorage.getItem("user"))
-      console.log(user);
-      console.log(dp);
+     
 
-      setDp(user?.pictures)
+      setDp(user?.picture)
       setUsername(user?.username)
+    
     }
   }, [])
   return (

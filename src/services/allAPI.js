@@ -39,20 +39,17 @@ export const getAllBooksPageAPI = async (reqHeader,searchKey) =>{
 return await commonAPI("GET",`${serverURL}/books/all?search=${searchKey}`,{},reqHeader)
 }
 
-///user-books/all -  bookpage api : called by booksstatus component when page loads - authorised user 
-
+///user-books/all - called by bookstatus when page loads - authorised user
 export const getAllUserBooksAPI = async (reqHeader) =>{
 return await commonAPI("GET",`${serverURL}/user-books/all`,{},reqHeader)
 }
 
-//user-books/all -  get requset called by purchase 
-
-export const getAllBoughtUserBooksAPI = async (reqHeader) =>{
+//user-books/bought -  get requset called by purchase component when it loads
+export const getAllUserBoughtBooksAPI = async (reqHeader) =>{
 return await commonAPI("GET",`${serverURL}/user-books/bought`,{},reqHeader)
-
 }
 
-//book/:id/edit -  get request by view when page loads
+//books/{id}/view -  get requset by View when page loads
 export const viewBookAPI = async (reqHeader,id) =>{
 return await commonAPI("GET",`${serverURL}/books/${id}/view`,{},reqHeader)
 
@@ -65,28 +62,27 @@ return await commonAPI("PUT",`${serverURL}/user/${id}/edit`,reqBody,reqHeader)
 }
 
 //admin-books/all : admin bookpage api : called by adminResources component when page loads - authorised user
-
 export const getAllAdminBooksAPI = async (reqHeader) =>{
 return await commonAPI("GET",`${serverURL}/admin-books/all`,{},reqHeader)
-
 }
 
 //users/all : GET requset by adminCollection component when tab 2 is open
-
 export const getAllUsersAPI = async (reqHeader) =>{
 return await commonAPI("GET",`${serverURL}/users/all`,{},reqHeader)
-
 }
 
-// export const updateBookStatusAPI = async (id,reqHeader) =>{
-// return await commonAPI("PUT",`${serverURL}/books/${id}/update`,{},reqHeader)
-
-// }
+//books/693fabaa553b4dd0ed7b1d9b/update : PUT request by adminCollection when approve btn clicked
+export const updateBookStatusAPI = async (id,reqHeader) =>{
+return await commonAPI("PUT",`${serverURL}/books/${id}/update`,{},reqHeader)
+}
 
 //books/:id : DELETE request by Bookstatus component when delete btn clicked
 export const removeBookAPI = async (id,reqHeader) =>{
 return await commonAPI("DELETE",`${serverURL}/books/${id}`,{},reqHeader)
-
 }
 
+// /books/:id/buy  : PUT request by view component using buy button click
+export const purchaseBookAPI = async (id,reqHeader) =>{
+return await commonAPI("PUT",`${serverURL}/books/${id}/buy`,{},reqHeader)
+}
 

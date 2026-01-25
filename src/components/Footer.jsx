@@ -22,7 +22,7 @@ function Footer() {
         </div>
         <div className="flex-col text-center mt-2 md:mt-0">
           <h3>FOLLOW US</h3>
-          <p className='my-4'>Let us be social</p>
+          <p className='my-4'>Let us be social</p>u
           <div className="flex justify-center">
             <FaFacebook className='mx-2'/>
             <FaInstagram className='mx-3' />

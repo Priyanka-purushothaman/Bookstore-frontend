@@ -2,40 +2,62 @@ import React, { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import Footer from '../../components/Footer'
 import { FaBackward, FaCamera, FaEye } from 'react-icons/fa'
-import { Link ,useParams} from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { FaX } from 'react-icons/fa6'
-import { viewBookAPI } from '../../services/allAPI'
+import { purchaseBookAPI, viewBookAPI } from '../../services/allAPI'
 import serverURL from '../../services/serverURL'
+import { loadStripe } from '@stripe/stripe-js';
 
 
 
 function View() {
 
   const [modalSatus, SetModalStatus] = useState(false)
-  const {id} = useParams()
+  const { id } = useParams()
   console.log(id);
-  
-  const[book,setBook] = useState({})
+
+  const [book, setBook] = useState({})
   console.log(book);
 
-   useEffect(()=>{
-   getBookDetails()
-   },[])
-  
+  useEffect(() => {
+    getBookDetails()
+  }, [])
 
-  const getBookDetails = async ()=>{
+
+  const getBookDetails = async () => {
     const token = sessionStorage.getItem("token")
-    if(token){
-       const reqHeader = {
-      "Authorization":`Bearer ${token}`
+    if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      const result = await viewBookAPI(reqHeader, id)
+      if (result.status == 200) {
+        setBook(result.data)
+      } else {
+        console.log(result);
+
+      }
     }
-    const result = await viewBookAPI(reqHeader,id)
-    if(result.status==200){
-      setBook(result.data)
-    } else{
-      console.log(result);
-      
-    }
+  }
+
+  const MakePayment = async () => {
+    // to view stripe payment window in browser
+    const stripe = await loadStripe('pk_test_51SkJD2L2no0NkoL9lvcGc0BVqbUpSLxbdFl58sd5uOJh2wAUMGpiUOOakgzAdbApoV04MrNM7dyUVhyceA0P2lHj00YRePg3SL');
+    //api call for checkout
+    const token = sessionStorage.getItem("token")
+    if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      const result = await purchaseBookAPI(id,reqHeader)
+      if (result.status == 200) {
+        const {checkoutURL} = result.data
+        window.location.href = checkoutURL
+      } else {
+        console.log(result);
+
+      }
+
     }
   }
   return (
@@ -74,7 +96,8 @@ function View() {
               <div className="flex justify-end">
                 <Link to={'/books'} className='bg-blue-700 text-white flex items-center rounded p-2'>
                   <FaBackward className='me-3 ' />Back</Link>
-                <button className='bg-green-700 p-2 rounded text-white ms-5'>Buy $ {book?.discountPrice} </button>
+                <button onClick={MakePayment} className='bg-green-700 p-2 rounded text-white ms-5'>
+                  Buy $ {book?.discountPrice} </button>
               </div>
 
             </div>
@@ -100,9 +123,9 @@ function View() {
                   {/* book images in row*/}
                   <div className="md:flex flex-wrap my-4 ">
                     {
-                      book?.uploadImages?.map((filename)=>(
-                      <img key={filename} className='md:w-75 w-25 md:me-2 mb-3 md:mb-0' src={`${serverURL}/uploads/${filename}`}  alt="book" />
-                                                  // ${serverURL}/books/${id}/view`
+                      book?.uploadImages?.map((filename) => (
+                        <img key={filename} className='md:w-75 w-25 md:me-2 mb-3 md:mb-0' src={`${serverURL}/uploads/${filename}`} alt="book" />
+                        // ${serverURL}/books/${id}/view`
                       ))
                     }
                   </div>

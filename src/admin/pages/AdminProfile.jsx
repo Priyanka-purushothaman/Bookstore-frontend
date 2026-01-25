@@ -11,14 +11,14 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 function AdminProfile() {
-  const [userDetails, setUserDetails] = useState({
-    id: "", username: "", password: "", role: "", bio: "", picture: ""
-  })
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [existingPicture, setExistingPicture] = useState("")
-  const [preview, setPreview] = useState('')
-  const [passwordMatch, setPasswordMatch] = useState(true)
-  const navigate = useNavigate()
+   const [userDetails, setUserDetails] = useState({
+      id: "", username: "", password: "", role: "", bio: "", picture: ""
+    })
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [existingPicture, setExistingPicture] = useState("")
+    const [preview, setPreview] = useState('')
+    const [passwordMatch, setPasswordMatch] = useState(true)
+    const navigate = useNavigate()
 
   useEffect(() => {
     if (sessionStorage.getItem("user")) {
@@ -28,7 +28,7 @@ function AdminProfile() {
     }
   }, [])
 
-  const handleUploadPicture = (imgFile) => {
+    const handleUploadPicture = (imgFile) => {
     setUserDetails({ ...userDetails, picture: imgFile })
     const url = URL.createObjectURL(imgFile)
     setPreview(url)
@@ -111,7 +111,7 @@ function AdminProfile() {
                 <input onChange={e => handleUploadPicture(e.target.files[0])} type="file" id='uploadImg' hidden />
                 {
                   existingPicture ?
-                    <img style={{ width: '100px', height: '100px', borderRadius: '50%' }} src={preview ? preview : existingPicture.startsWith("https://lh3.googleusercontent.com/") ? existingPicture : `${serverURL}/uploadsa/${existingPicture}`} alt="profile" />
+                    <img style={{ width: '100px', height: '100px', borderRadius: '50%' }} src={preview ? preview : existingPicture.startsWith("https://lh3.googleusercontent.com/") ? existingPicture : `${serverURL}/uploads/${existingPicture}`} alt="profile" />
                     :
                     <img style={{ width: '100px', height: '100px', borderRadius: '50%' }} src={preview ? preview : "https://previews.123rf.com/images/azvector/azvector1802/azvector180200461/95911743-info-people-upload-user-icon-vector-illustration.jpg"} alt="profile" />
 
@@ -143,8 +143,8 @@ function AdminProfile() {
               <div className="mb-3 flex justify-center px-5 w-full mt-5">
                 <button onClick={resetForm} className="px-3 mx-4 py-2 rounded border bg-red-600 text-white hover:bg-black hover:border-green-600 hover:text-red-600">
                   RESET</button>
-                <button className="px-3 py-2 rounded border bg-green-600 text-white hover:bg-black hover:border--600 hover:text-green-600" disabled={!passwordMatch ? true : false}>
-                  UPDATE  </button>
+                <button onClick={handleProfileUpdate} className="px-3 ms-5 py-2 rounded border bg-green-600 text-white hover:bg-yellow-400 hover:border-green-600 hover:text-green-600"
+                  disabled={!passwordMatch ? true : false}>UPDATE</button>
               </div>
 
 

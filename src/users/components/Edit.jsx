@@ -140,8 +140,9 @@ function Edit() {
               </div>
               {/* button */}
               <div className="mb-3 flex justify-end px-5 w-full mt-5 ">
-                <button onClick={resetForm} className="px-3 py-2 rounded border bg-red-600 text-white hover:bg-yellow-400 hover:border-red-600 hover:text-red-600">
-                  RESET</button>
+                <butto
+                n onClick={resetForm} className="px-3 py-2 rounded border bg-red-600 text-white hover:bg-yellow-400 hover:border-red-600 hover:text-red-600">
+                  RESET</butto>
                 <button onClick={handleProfileUpdate} className="px-3 ms-5 py-2 rounded border bg-green-600 text-white hover:bg-yellow-400 hover:border-green-600 hover:text-green-600"
                   disabled={!passwordMatch ? true : false}>UPDATE</button>
               </div>

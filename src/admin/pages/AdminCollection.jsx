@@ -4,8 +4,8 @@ import AdminSideBar from '../components/AdminSideBar'
 import Footer from '../../components/Footer'
 import { getAllAdminBooksAPI, getAllUsersAPI } from '../../services/allAPI'
 import serverURL from '../../services/serverURL'
-// import { ToastContainer, toast } from 'react-toastify';
-// import  {updateBookStatusAPI} from '../../services/allAPI'
+import { ToastContainer, toast } from 'react-toastify';
+import { updateBookStatusAPI } from '../../services/allAPI'
 
 
 function AdminCollection() {
@@ -52,24 +52,22 @@ function AdminCollection() {
     }
   }
 
-  // const updateBookStatus = async (id) => {
-  //   const token = sessionStorage.getItem("token")
-  //   if(token){
-  //    const reqHeader = {
-  //     "Authorization": `Bearer ${token}`
-  //   }
-  //    const result = await updateBookStatusAPI(id,reqHeader)
-  //   if (result.status == 200) {
-  //     toast.success("Book Status updated!!!")
-  //     getAllBooks(token)
-  //   } else {
-  //     console.log(result);
+  const updateBookStatus = async (id) => {
+    const token = sessionStorage.getItem("token")
+    if (token) {
+      const reqHeader = {
+        "Authorization": `Bearer ${token}`
+      }
+      const result = await updateBookStatusAPI(id, reqHeader)
+      if (result.status == 200) {
+        toast.success("Book Status updated!!!")
+        getAllBooks(token)
+      } else {
+        console.log(result);
 
-  //   }
-  //   }
-    
-   
-  // }
+      }
+    }
+  }
 
 
 
@@ -104,12 +102,12 @@ function AdminCollection() {
                         <h4 className='text-lg'>{book?.title}</h4>
                         <h4>${book?.discountPrice}</h4>
                         <div className='grid mt-3 w-full'>
-                            {
-                              book?.status !="approved"?
-                            <button className='bg-green-600 mt-3 py-3 text-white'>APPROVE</button>
+                          {
+                            book?.status != "approved" ?
+                              <button onClick={()=>updateBookStatus(book?._id)} className='bg-green-600 mt-3 py-3 text-white'>APPROVE</button>
                               :
-                              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Check_icon.svg/1024px-Check_icon.svg.png" alt="check icon" />
-                            }
+                              <img width={'50px'} src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Check_icon.svg/1024px-Check_icon.svg.png" alt="check icon" />
+                          }
                         </div>
                       </div>
                     </div>
@@ -130,8 +128,8 @@ function AdminCollection() {
                       <p className="text-red-600 font-bold">ID : {user?._id}</p>
                       <div className="flex items-center text-wrap mt-2">
                         {/* user image */}
-                        <img width={'50px'} height={'50px'} style={{ borderRadius: '50%' }} 
-                        src={user?.picture ? user?.picture.startsWith("https://lh3.googleusercontent.com/") ? user?.picture : `${serverURL}/uploads/${user.picture}` : "https://mockmind-api.uifaces.co/content/human/80.jpg"} alt="user" />
+                        <img width={'50px'} height={'50px'} style={{ borderRadius: '50%' }}
+                          src={user?.picture ? user?.picture.startsWith("https://lh3.googleusercontent.com/") ? user?.picture : `${serverURL}/uploads/${user.picture}` : "https://mockmind-api.uifaces.co/content/human/80.jpg"} alt="user" />
                         {/* content */}
                         <div className="ms-5">
                           <h4 className="font-bold text-2xl text-blue-800">{user?.email}</h4>
@@ -151,8 +149,8 @@ function AdminCollection() {
         </div>
       </div>
       <Footer />
-      {/* <ToastContainer position="top-center" autoClose={5000} theme="colored" /> */}
-      
+      <ToastContainer position="top-center" autoClose={5000} theme="colored" />
+
     </>
   )
 }
